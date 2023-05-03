@@ -8,10 +8,12 @@ final class MainData implements ProductImportCollectionInterface
 {
     public function map(array $productData, Product $product): Product
     {
-        $product->name = $product['title'];
-        $product->description = $product['details']['descriptionText'];
-        $product->productNumber = $product['dan'];
+        $product->id = md5('product-' . $productData['dan']);
+        $product->name = $productData['title'];
+        $product->description = $productData['details']['descriptionText'];
+        $product->productNumber = (string)$productData['dan'];
         $product->isCloseout = true;
+        $product->stock = $productData['purchasable'] ? 99 : 0;
 
         return $product;
     }

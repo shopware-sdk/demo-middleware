@@ -16,6 +16,23 @@ final class MainDataTest extends TestCase
 
         $product = (new MainData())->map($data, $product);
 
-        self::assertSame($data['name'], $product->name);
+        self::assertSame($data['title'], $product->name);
+        self::assertSame(md5('product-' . $data['dan']), $product->id);
+        self::assertSame($data['details']['descriptionText'], $product->description);
+        self::assertSame((string)$data['dan'], $product->productNumber);
+        self::assertTrue($product->isCloseout);
+        self::assertSame(99, $product->stock);
     }
+
+    public function testStockZero()
+    {
+        $data = Fixtures::getProduct();
+        $data['purchasable'] = false;
+        $product = new Product();
+
+        $product = (new MainData())->map($data, $product);
+
+        self::assertSame(0, $product->stock);
+    }
+
 }

@@ -22,3 +22,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    ShopwareSdk\Config:
+        arguments:
+            $apiUrl: '%env(resolve:SW_API_URL)%'
+            $clientId: '%env(resolve:SW_CLIENT_ID)%'
+            $clientSecret: '%env(resolve:SW_CLIENT_SECRET)%'
+
+    ShopwareSdk\AdminApi:
+
+
