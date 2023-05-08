@@ -31,4 +31,11 @@ final class ProductTest extends KernelTestCase
         self::assertNull($currency);
     }
 
+    public function testGetTax(): void
+    {
+        $currency = $this->product->getTax(19.0);
+
+        self::assertSame(19.0, $currency->taxRate);
+        self::assertSame('Standard rate', $currency->name);
+    }
 }

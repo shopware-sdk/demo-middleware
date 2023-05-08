@@ -4,11 +4,12 @@ namespace App\ShopwareSdk;
 
 use ShopwareSdk\AdminApi;
 use ShopwareSdk\Model\Currency;
+use ShopwareSdk\Model\Tax;
 
 /**
  * @experimental It may be that the functionality come in extra package
  */
-final class Product
+class Product
 {
     public function __construct(
         private readonly AdminApi $adminApi
@@ -20,5 +21,11 @@ final class Product
     {
         return $this->adminApi->currency->getAll(['filter' => ['isoCode' => $isoCode]])->entities[0] ?? null;
     }
+
+    public function getTax(float $taxRate): ?Tax
+    {
+        return $this->adminApi->tax->getAll(['filter' => ['taxRate' => $taxRate]])->entities[0] ?? null;
+    }
+
 
 }

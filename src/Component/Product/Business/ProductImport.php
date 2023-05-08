@@ -25,5 +25,6 @@ final class ProductImport
             $product = $mapper->map($productData, $product);
         }
 
+
     }
 }
