@@ -8,7 +8,7 @@ use ShopwareSdk\Model\Product;
 
 final class PriceData implements ProductImportCollectionInterface
 {
-    private string $currencyId = '';
+    private array $currencyIdByIso = [];
     public function __construct(
         private readonly ProductShopwareSdk $productShopwareSdk,
     )
@@ -23,7 +23,7 @@ final class PriceData implements ProductImportCollectionInterface
 
         $price = new Price();
 
-        $price->currencyId = $this->getCurrencyId();
+        $price->currencyId = $this->getCurrencyId($productData['priceCurrencyIso']);
         $price->gross = (float) ($productData['priceDigit'] . '.' . $productData['priceDecimal']);
         $price->net = (float) ($productData['netPriceDigit'] . '.' . $productData['netPriceDecimal']);
         $price->linked = false;
@@ -33,12 +33,12 @@ final class PriceData implements ProductImportCollectionInterface
         return $product;
     }
 
-    private function getCurrencyId(): string
+    private function getCurrencyId(string $iso): string
     {
-        if ($this->currencyId === '') {
-            $this->currencyId = $this->productShopwareSdk->getCurrencyByIsoCode('EUR')->id;
+        if (!isset($this->currencyIdByIso[$iso])) {
+            $this->currencyIdByIso[$iso] = $this->productShopwareSdk->getCurrencyByIsoCode($iso)->id;
         }
 
-        return $this->currencyId;
+        return $this->currencyIdByIso[$iso];
     }
 }
